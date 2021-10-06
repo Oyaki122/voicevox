@@ -210,14 +210,15 @@ export default defineComponent({
       () => store.getters.ACTIVE_AUDIO_KEY
     );
     const addAudioItem = async () => {
-      const prevAudioKey = activeAudioKey.value!;
-      const speaker = store.state.audioItems[prevAudioKey].speaker;
+      const prevAudioKey =
+        activeAudioKey.value ?? audioKeys.value[audioKeys.value.length - 1];
+      const speaker = audioItems.value[prevAudioKey].speaker;
       const audioItem: AudioItem = { text: "", speaker: speaker };
       const newAudioKey = await store.dispatch("COMMAND_REGISTER_AUDIO_ITEM", {
         audioItem,
         prevAudioKey: activeAudioKey.value,
       });
-      audioCellRefs[newAudioKey].focusTextField();
+      focusCell({ audioKey: newAudioKey });
     };
 
     // Pane
